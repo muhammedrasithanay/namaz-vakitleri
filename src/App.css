@@ -30,33 +30,37 @@
 }
 
 .top-section {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .next-prayer-label {
   color: var(--accent-green);
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  font-weight: 500;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
 }
 
 .next-prayer-label .bold {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .countdown-main {
-  font-size: 8rem;
-  font-weight: 300;
+  font-size: 7.5rem;
+  font-weight: 200;
+  /* Very thin as in image */
   color: var(--text-main);
-  letter-spacing: -2px;
+  letter-spacing: -3px;
   line-height: 1;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  font-family: 'Inter', sans-serif;
 }
 
 .city-label {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: #000;
+  margin-bottom: 30px;
 }
 
 .middle-section {
@@ -78,35 +82,35 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding: 0 10px;
+  padding: 0 15px;
+  margin-top: 20px;
 }
 
 .prayer-item-mini {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex: 1;
 }
 
-.prayer-item-mini.active {
-  color: var(--accent-green);
-}
-
 .p-name {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #8e8e93;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .active .p-name {
   color: var(--accent-green);
+  font-weight: 600;
 }
 
 .p-time {
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: var(--text-muted);
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: #333;
 }
 
 .active .p-time {

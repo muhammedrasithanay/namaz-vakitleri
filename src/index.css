@@ -1,17 +1,17 @@
 :root {
-  /* Color Palette - Minimalist Blue Theme */
+  /* Color Palette - Premium Blue Theme matching reference image style */
   --primary-color: #145da0;
-  /* Ocean Blue */
-  --bg-color: #f8f9fa;
-  --text-main: #212529;
-  --text-muted: #6c757d;
+  /* Deep Ocean Blue */
+  --bg-color: #ffffff;
+  --text-main: #000000;
+  --text-muted: #8e8e93;
   --accent-blue: #145da0;
-  --accent-green: #145da0;
-  /* Kept variable name for simplicity in App.css, pointed to blue */
-  --border-color: #e9ecef;
+  --accent-green: #2d6a4f;
+  /* For active/next prayer highlighting, matching the green in image */
+  --border-color: #f2f2f7;
 
   /* Font */
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 * {
@@ -23,8 +23,8 @@
 body {
   font-family: var(--font-family);
   background-color: var(--bg-color);
-  /* Geometric background pattern */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z' fill='none' stroke='%23e0e0e0' stroke-width='0.5'/%3E%3C/svg%3E");
+  /* Octagonal Islamic pattern background precisely matching reference */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpath d='M60 0 L75 45 L120 60 L75 75 L60 120 L45 75 L0 60 L45 45 Z' fill='none' stroke='%23eaf2f8' stroke-width='0.8'/%3E%3Cpath d='M60 20 L68 52 L100 60 L68 68 L60 100 L52 68 L20 60 L52 52 Z' fill='none' stroke='%23f4f9fc' stroke-width='0.5'/%3E%3C/svg%3E");
   background-repeat: repeat;
   color: var(--text-main);
   min-height: 100vh;
@@ -32,6 +32,7 @@ body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 #root {

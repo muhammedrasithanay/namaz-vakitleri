@@ -22,12 +22,21 @@ function CitySearchModal({ onClose, onCitySelect }) {
         const fetchProvinces = async () => {
             try {
                 const res = await fetch('https://ezanvakti.emushaf.net/sehirler/2');
+                if (!res.ok) throw new Error();
                 const data = await res.json();
                 if (data && data.value) {
                     setProvinces(data.value);
+                } else {
+                    throw new Error();
                 }
             } catch (error) {
-                console.error('Provinces fetch error:', error);
+                console.error('Provinces fetch error, using static fallback:', error);
+                // Map the static CITY_STATE_IDS to the format the modal expects
+                const fallbackProvinces = Object.entries(CITY_STATE_IDS).map(([name, id]) => ({
+                    SehirAdi: name,
+                    SehirID: id
+                }));
+                setProvinces(fallbackProvinces);
             } finally {
                 setLoadingCity(false);
             }
@@ -44,6 +53,7 @@ function CitySearchModal({ onClose, onCitySelect }) {
         setLoadingCity(true);
         try {
             const res = await fetch(`https://ezanvakti.emushaf.net/ilceler/${province.SehirID}`);
+            if (!res.ok) throw new Error();
             const data = await res.json();
 
             if (data && data.value) {
@@ -52,9 +62,13 @@ function CitySearchModal({ onClose, onCitySelect }) {
                 throw new Error();
             }
         } catch (e) {
-            console.error('Districts fetch error:', e);
-            // Fallback
-            onCitySelect({ city: province.SehirAdi, name: province.SehirAdi, districtId: province.SehirID });
+            console.error('Districts fetch error, acting as single city select:', e);
+            // Fallback: treat city as its own primary district
+            onCitySelect({
+                city: province.SehirAdi,
+                name: province.SehirAdi,
+                districtId: province.SehirID
+            });
             onClose();
         } finally {
             setLoadingCity(false);
@@ -79,46 +93,45 @@ function CitySearchModal({ onClose, onCitySelect }) {
     return (
         <div className="modal-overlay" style={{ zIndex: 2000 }}>
             <div className="modal-box" style={{
-                padding: '24px', position: 'relative', maxWidth: '380px', width: '100%',
-                backgroundColor: 'white', borderRadius: '16px', display: 'flex', flexDirection: 'column',
-                maxHeight: '85vh', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+                padding: '24px', position: 'relative', maxWidth: '400px', width: '90%',
+                backgroundColor: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)',
+                borderRadius: '24px', display: 'flex', flexDirection: 'column',
+                maxHeight: '85vh', boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
+                border: '1px solid rgba(0, 0, 0, 0.05)'
             }}>
-                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '16px', color: '#1f2937', textAlign: 'center', position: 'relative' }}>
+                <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '20px', color: '#1a1a1a', textAlign: 'center', position: 'relative', letterSpacing: '-0.5px' }}>
                     {selectedProvince && (
                         <button
                             onClick={handleBackClick}
-                            style={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', fontSize: '1.2rem', color: '#3b82f6', cursor: 'pointer', padding: '0 8px' }}
+                            style={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', fontSize: '1.5rem', color: '#145da0', cursor: 'pointer', padding: '0 8px' }}
                         >
                             ←
                         </button>
                     )}
-                    {selectedProvince ? `${selectedProvince.SehirAdi} Seçimi` : 'Bir Şehir Seçin'}
+                    {selectedProvince ? `${selectedProvince.SehirAdi}` : 'Şehir Seçimi'}
                 </h2>
 
                 {/* Search Box */}
-                <div style={{ position: 'relative', marginBottom: '16px' }}>
-                    <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }}>
-                        🔍
-                    </span>
+                <div style={{ position: 'relative', marginBottom: '20px' }}>
                     <input
                         type="text"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         placeholder={selectedProvince ? "İlçe ara..." : "Şehir ara..."}
                         style={{
-                            width: '100%', paddingLeft: '40px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px',
-                            backgroundColor: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '12px', outline: 'none',
-                            transition: 'background-color 0.2s, border-color 0.2s', color: '#1f2937'
+                            width: '100%', padding: '14px 20px',
+                            backgroundColor: '#f2f2f7', border: 'none', borderRadius: '16px', outline: 'none',
+                            fontSize: '1rem', color: '#000'
                         }}
                         disabled={loadingCity}
                     />
                 </div>
 
                 {/* List Container */}
-                <div className="custom-scrollbar" style={{ overflowY: 'auto', flex: 1, paddingRight: '8px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div className="custom-scrollbar" style={{ overflowY: 'auto', flex: 1, paddingRight: '4px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {loadingCity ? (
-                        <div style={{ textAlign: 'center', padding: '40px 0', color: '#6b7280', fontWeight: 500 }}>
-                            İlçeler yükleniyor...
+                        <div style={{ textAlign: 'center', padding: '40px 0', color: '#8e8e93', fontWeight: 500 }}>
+                            Yükleniyor...
                         </div>
                     ) : selectedProvince ? (
                         filteredDistricts.length > 0 ? (
@@ -127,17 +140,16 @@ function CitySearchModal({ onClose, onCitySelect }) {
                                     key={district.IlceID}
                                     onClick={() => handleDistrictClick(district)}
                                     style={{
-                                        width: '100%', textAlign: 'left', padding: '16px 20px', backgroundColor: '#f9fafb',
-                                        borderRadius: '12px', transition: 'all 0.2s', fontWeight: 500, color: '#374151', border: 'none', cursor: 'pointer'
+                                        width: '100%', textAlign: 'left', padding: '18px 20px', backgroundColor: '#fcfcfc',
+                                        borderRadius: '16px', transition: 'all 0.2s', fontWeight: 500, color: '#333', border: '1px solid #f2f2f7', cursor: 'pointer',
+                                        fontSize: '1.1rem'
                                     }}
-                                    onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#eff6ff'; e.currentTarget.style.color = '#2563eb'; }}
-                                    onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#f9fafb'; e.currentTarget.style.color = '#374151'; }}
                                 >
                                     {district.IlceAdi}
                                 </button>
                             ))
                         ) : (
-                            <div style={{ textAlign: 'center', padding: '24px 0', color: '#9ca3af' }}>Sonuç bulunamadı</div>
+                            <div style={{ textAlign: 'center', padding: '24px 0', color: '#8e8e93' }}>Sonuç bulunamadı</div>
                         )
                     ) : filteredProvinces.length > 0 ? (
                         filteredProvinces.map(city => (
@@ -145,17 +157,16 @@ function CitySearchModal({ onClose, onCitySelect }) {
                                 key={city.SehirID}
                                 onClick={() => handleCityClick(city)}
                                 style={{
-                                    width: '100%', textAlign: 'left', padding: '16px 20px', backgroundColor: '#f9fafb',
-                                    borderRadius: '12px', transition: 'all 0.2s', fontWeight: 500, color: '#374151', border: 'none', cursor: 'pointer'
+                                    width: '100%', textAlign: 'left', padding: '18px 20px', backgroundColor: '#fcfcfc',
+                                    borderRadius: '16px', transition: 'all 0.2s', fontWeight: 500, color: '#333', border: '1px solid #f2f2f7', cursor: 'pointer',
+                                    fontSize: '1.1rem'
                                 }}
-                                onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#eff6ff'; e.currentTarget.style.color = '#2563eb'; }}
-                                onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#f9fafb'; e.currentTarget.style.color = '#374151'; }}
                             >
                                 {city.SehirAdi}
                             </button>
                         ))
                     ) : (
-                        <div style={{ textAlign: 'center', padding: '24px 0', color: '#9ca3af' }}>Sonuç bulunamadı</div>
+                        <div style={{ textAlign: 'center', padding: '24px 0', color: '#8e8e93' }}>Sonuç bulunamadı</div>
                     )}
                 </div>
 
@@ -163,11 +174,9 @@ function CitySearchModal({ onClose, onCitySelect }) {
                 <button
                     onClick={onClose}
                     style={{
-                        marginTop: '16px', width: '100%', padding: '12px', backgroundColor: '#f3f4f6', color: '#374151',
-                        fontWeight: 600, borderRadius: '12px', border: 'none', cursor: 'pointer', transition: 'background-color 0.2s'
+                        marginTop: '20px', width: '100%', padding: '16px', backgroundColor: '#145da0', color: '#fff',
+                        fontWeight: 700, borderRadius: '16px', border: 'none', cursor: 'pointer', fontSize: '1.1rem'
                     }}
-                    onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#e5e7eb'; }}
-                    onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#f3f4f6'; }}
                     disabled={loadingCity}
                 >
                     Vazgeç
