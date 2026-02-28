@@ -423,57 +423,42 @@ function App() {
       )}
 
       {/* Main Container - Conditional Rendering */}
-      <div className="tab-content" style={{ paddingBottom: '80px' }}>
+      <div className="tab-content">
         {activeTab === 'vakitler' && (
-          !prayerTimes ? <div className="loading" style={{ marginTop: '50px' }}>Yükleniyor...</div> : (
+          !prayerTimes ? <div className="loading">Yükleniyor...</div> : (
             <>
-              <div className="top-section" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+              <div className="top-section">
 
                 {/* 1. Next Prayer Label */}
-                <h3 className="next-prayer-label" style={{ fontSize: '1.4rem', color: '#333', fontWeight: 400, marginBottom: '0' }}>
-                  <span style={{ fontWeight: 600, color: '#145da0' }}>{TURKISH_NAMES[countdownInfo?.name]}</span> vaktine
+                <h3 className="next-prayer-label">
+                  <span className="bold">{TURKISH_NAMES[countdownInfo?.name]}</span> vaktine
                 </h3>
 
                 {/* 2. Main Countdown */}
-                <h1 className="countdown-main" style={{
-                  fontSize: '6.5rem', fontWeight: 300, color: '#000', letterSpacing: '-0.02em',
-                  lineHeight: 1, margin: '15px 0', fontFamily: 'system-ui, -apple-system, sans-serif'
-                }}>
+                <h1 className="countdown-main">
                   {countdownInfo?.formatted}
                 </h1>
 
                 {/* 3. Location Label */}
-                <h2 className="city-label" style={{ fontSize: '1.1rem', fontWeight: 600, color: '#000', marginTop: '5px' }}>
+                <h2 className="city-label" onClick={() => setShowCitySearch(true)}>
                   {locationName}, Türkiye {isGps && <span style={{ fontSize: '0.9rem', color: '#aaa', marginLeft: '4px' }}>📍</span>}
                 </h2>
               </div>
 
               {/* 4. Date Label */}
-              <div className="middle-section" style={{ margin: '35px 0 25px 0' }}>
-                <p className="full-date" style={{ fontSize: '1.05rem', color: '#111', fontWeight: 400 }}>
+              <div className="middle-section">
+                <p className="full-date">
                   {hijriDate && `${hijriDate.day} ${TURKISH_HIJRI_MONTHS[hijriDate.month.en] || hijriDate.month.en} ${hijriDate.year}`} / {dateStr}
                 </p>
               </div>
               <div className="bottom-section">
-                <div className="horizontal-prayer-list" style={{ display: 'flex', justifyContent: 'space-between', padding: '0 10px', marginTop: '20px' }}>
+                <div className="horizontal-prayer-list">
                   {['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'].map((prayer) => {
                     const isActive = countdownInfo?.name === prayer;
                     return (
-                      <div key={prayer} className={`prayer-item-mini ${isActive ? 'active' : ''}`} style={{
-                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', flex: 1
-                      }}>
-                        <span style={{
-                          fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em',
-                          color: isActive ? '#145da0' : 'var(--text-muted)'
-                        }}>
-                          {TURKISH_NAMES[prayer]}
-                        </span>
-                        <span style={{
-                          fontSize: '1.1rem', fontWeight: isActive ? 700 : 500,
-                          color: isActive ? '#145da0' : 'var(--text-main)'
-                        }}>
-                          {prayerTimes[prayer]}
-                        </span>
+                      <div key={prayer} className={`prayer-item-mini ${isActive ? 'active' : ''}`}>
+                        <span className="p-name">{TURKISH_NAMES[prayer]}</span>
+                        <span className="p-time">{prayerTimes[prayer]}</span>
                       </div>
                     );
                   })}
@@ -481,9 +466,9 @@ function App() {
 
                 {/* Hadith Container */}
                 <div className="hadith-container">
-                  <span style={{ color: 'var(--accent-green)', fontSize: '1.5rem', marginBottom: '8px', display: 'block' }}>❝</span>
-                  <p style={{ color: 'var(--text-muted)', fontWeight: 500, fontStyle: 'italic', fontSize: '0.875rem', lineHeight: 1.6 }}>{dailyHadith}</p>
-                  <span style={{ color: 'var(--accent-green)', fontSize: '1.5rem', marginTop: '8px', display: 'block' }}>❞</span>
+                  <span className="hadith-quote-icon">❝</span>
+                  <p className="hadith-text">{dailyHadith}</p>
+                  <span className="hadith-quote-icon" style={{ textAlign: 'right' }}>❞</span>
                 </div>
               </div>
             </>

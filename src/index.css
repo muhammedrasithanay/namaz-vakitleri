@@ -1,17 +1,13 @@
 :root {
-  /* Color Palette - Premium Blue Theme matching reference image style */
-  --primary-color: #145da0;
-  /* Deep Ocean Blue */
-  --bg-color: #ffffff;
-  --text-main: #000000;
-  --text-muted: #8e8e93;
-  --accent-blue: #145da0;
-  --accent-green: #2d6a4f;
-  /* For active/next prayer highlighting, matching the green in image */
-  --border-color: #f2f2f7;
+  /* Refined Premium Blue Palette */
+  --primary-blue: #0056b3;
+  --bg-light: #ffffff;
+  --text-black: #000000;
+  --text-grey: #8e8e93;
+  --accent-blue: #007aff;
+  --border-ultra-light: #f2f2f7;
 
-  /* Font */
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family: 'Inter', -apple-system, system-ui, sans-serif;
 }
 
 * {
@@ -22,11 +18,11 @@
 
 body {
   font-family: var(--font-family);
-  background-color: var(--bg-color);
-  /* Octagonal Islamic pattern background precisely matching reference */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpath d='M60 0 L75 45 L120 60 L75 75 L60 120 L45 75 L0 60 L45 45 Z' fill='none' stroke='%23eaf2f8' stroke-width='0.8'/%3E%3Cpath d='M60 20 L68 52 L100 60 L68 68 L60 100 L52 68 L20 60 L52 52 Z' fill='none' stroke='%23f4f9fc' stroke-width='0.5'/%3E%3C/svg%3E");
+  background-color: var(--bg-light);
+  /* High-fidelity Zellige tile pattern (octagons and squares) precisely matching Islamic tile aesthetics */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23f4f7f9' stroke-width='0.6'%3E%3Cpath d='M40 0 L50 10 L40 20 L30 10 Z' /%3E%3Cpath d='M0 40 L10 50 L20 40 L10 30 Z' /%3E%3Cpath d='M40 80 L50 70 L40 60 L30 70 Z' /%3E%3Cpath d='M80 40 L70 50 L60 40 L70 30 Z' /%3E%3Crect x='35' y='35' width='10' height='10' /%3E%3Cpath d='M10 10 L20 20 M60 60 L70 70 M10 70 L20 60 M60 20 L70 10' /%3E%3C/g%3E%3C/svg%3E");
   background-repeat: repeat;
-  color: var(--text-main);
+  color: var(--text-black);
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -37,12 +33,12 @@ body {
 
 #root {
   width: 100%;
-  max-width: 600px;
+  max-width: 450px;
   height: 100vh;
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  padding: 40px 20px;
+  padding: 20px;
 }
 
 h1,
