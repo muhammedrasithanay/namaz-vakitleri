@@ -1,0 +1,15 @@
+{
+  "appId": "com.namazvakitleri.app",
+  "appName": "Namaz Vakitleri",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#145da0",
+      "showSpinner": false
+    }
+  }
+}

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Namaz Vakitleri</string>
+    <string name="title_activity_main">Namaz Vakitleri</string>
+    <string name="package_name">com.namazvakitleri.app</string>
+    <string name="custom_url_scheme">com.namazvakitleri.app</string>
+</resources>
